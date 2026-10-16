@@ -1,0 +1,148 @@
+{
+   "checksum": "bc9face8519a71651d72aff8ca67f1fa",
+   "roots": {
+      "bookmark_bar": {
+         "children": [ {
+            "date_added": "13244123863334469",
+            "date_last_used": "0",
+            "guid": "6a2bcc55-53fa-4c56-ab33-8c6ad64047e6",
+            "id": "7",
+            "name": "京东",
+            "show_icon": false,
+            "source": "import_fre",
+            "type": "url",
+            "url": "http://n.piefeng.cn/edgj",
+            "visit_count": 0
+         }, {
+            "date_added": "13244123863349459",
+            "date_last_used": "0",
+            "guid": "5a22659d-37d6-4ce5-ba48-2a7804a878a3",
+            "id": "8",
+            "name": "天猫",
+            "show_icon": false,
+            "source": "import_fre",
+            "type": "url",
+            "url": "http://n.piefeng.cn/edgh",
+            "visit_count": 0
+         }, {
+            "date_added": "13248179544851920",
+            "date_last_used": "0",
+            "guid": "f53bcd17-d165-4e74-a5c5-af772f9f60c4",
+            "id": "9",
+            "name": "搜索",
+            "show_icon": false,
+            "source": "import_fre",
+            "type": "url",
+            "url": "http://n.piefeng.cn/elhd",
+            "visit_count": 0
+         }, {
+            "date_added": "13244123863319519",
+            "date_last_used": "0",
+            "guid": "9d1b8109-e260-49f9-a9be-f3b18bde52de",
+            "id": "10",
+            "name": "淘宝",
+            "show_icon": false,
+            "source": "import_fre",
+            "type": "url",
+            "url": "http://n.piefeng.cn/eelg",
+            "visit_count": 0
+         }, {
+            "date_added": "13244123863303584",
+            "date_last_used": "0",
+            "guid": "abc73e39-0575-4aac-8ad5-770131fcdd3f",
+            "id": "11",
+            "name": "百度",
+            "show_icon": false,
+            "source": "import_fre",
+            "type": "url",
+            "url": "http://n.piefeng.cn/ffhd",
+            "visit_count": 0
+         }, {
+            "date_added": "13244123863370388",
+            "date_last_used": "0",
+            "guid": "a0350f8a-9f46-4cfe-abf9-d82f3526ce1c",
+            "id": "12",
+            "name": "苏宁易购",
+            "show_icon": false,
+            "source": "import_fre",
+            "type": "url",
+            "url": "http://n.piefeng.cn/dljc",
+            "visit_count": 0
+         } ],
+         "date_added": "13436619134761409",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "0bc5d13f-2cba-5d74-951f-3f233fe6c908",
+         "id": "1",
+         "name": "收藏夹栏",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "other": {
+         "children": [ {
+            "children": [ {
+               "date_added": "13235280725372895",
+               "date_last_used": "0",
+               "guid": "1edfe57b-0381-4ed4-9022-7aeff1edd48b",
+               "id": "14",
+               "name": "ASUS Homepage",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "http://www.asus.com/",
+               "visit_count": 0
+            }, {
+               "date_added": "13235280725388517",
+               "date_last_used": "0",
+               "guid": "cc55eaee-392c-4ea8-b442-7f5882a3a56d",
+               "id": "15",
+               "name": "ASUS Member",
+               "show_icon": false,
+               "source": "import_fre",
+               "type": "url",
+               "url": "https://account.asus.com/",
+               "visit_count": 0
+            } ],
+            "date_added": "13436619138882353",
+            "date_last_used": "0",
+            "date_modified": "0",
+            "guid": "f34bdd94-f06c-4c50-8c39-cbcbe79d1f5d",
+            "id": "13",
+            "name": "ASUS E-Service",
+            "source": "import_fre",
+            "type": "folder"
+         } ],
+         "date_added": "13436619134761409",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "82b081ec-3dd3-529c-8475-ab6c344590dd",
+         "id": "2",
+         "name": "其他收藏夹",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13436619134761409",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "4cf2e351-0e85-532b-bb37-df045d8f8d0f",
+         "id": "3",
+         "name": "移动收藏夹",
+         "source": "unknown",
+         "type": "folder"
+      },
+      "workspaces_v2": {
+         "children": [  ],
+         "date_added": "13436619134761409",
+         "date_last_used": "0",
+         "date_modified": "0",
+         "guid": "75aa6670-344f-549d-b742-660f029506ab",
+         "id": "5",
+         "name": "工作区",
+         "source": "unknown",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}
