@@ -81,8 +81,8 @@ img {
 }
 
 .opening-title {
-  margin: clamp(36px, 6vh, 76px) 0 clamp(34px, 5vh, 64px);
-  height: clamp(238px, 37vh, 390px);
+  margin: clamp(34px, 5vh, 66px) 0 clamp(30px, 4vh, 50px);
+  height: clamp(126px, 16vw, 246px);
 }
 
 .opening-tech {
@@ -90,11 +90,7 @@ img {
 }
 
 .opening-tech-cn {
-  height: 36%;
-}
-
-.opening-tech-en {
-  height: 64%;
+  height: 100%;
 }
 
 .opening-meter {
@@ -568,7 +564,7 @@ img {
   }
 
   .opening-title {
-    height: clamp(210px, 34vh, 300px);
+    height: clamp(118px, 30vw, 178px);
   }
 
   .hero-foot p {

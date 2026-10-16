@@ -61,43 +61,23 @@ function Opening() {
     <div className="opening" aria-hidden="true">
       <div className="opening-copy">
         <p className="opening-eyebrow">ZOU JIALE / SELECTED WORKS</p>
-        <div className="opening-title" aria-label="个人作品集 / Personal Portfolio">
+        <div className="opening-title" aria-label="设计，让想法被看见">
           <div className="opening-tech opening-tech-cn">
             <TechText
-              text="个人作品集"
+              text="设计，让想法被看见"
               fontFamily='Arial, "PingFang SC", "Microsoft YaHei", sans-serif'
               fontWeight={900}
-              fontSize={128}
-              letterSpacing={0.04}
+              fontSize={260}
+              letterSpacing={0.025}
               color="#f1f0eb"
               accentColor="#ff321d"
               align="left"
               intro="assemble"
-              introDuration={1.75}
+              introDuration={1.9}
               reveal="letter"
               labels={false}
               guides={false}
-              specks={10}
-              sweep={false}
-              draggable={false}
-            />
-          </div>
-          <div className="opening-tech opening-tech-en">
-            <TechText
-              text="PERSONAL PORTFOLIO"
-              fontFamily="Arial, Helvetica, sans-serif"
-              fontWeight={900}
-              fontSize={190}
-              letterSpacing={-0.075}
-              color="#ff321d"
-              accentColor="#f1f0eb"
-              align="right"
-              intro="metrics"
-              introDuration={2.05}
-              reveal="area"
-              labels={false}
-              guides
-              specks={14}
+              specks={12}
               sweep={false}
               draggable={false}
             />
