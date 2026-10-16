@@ -124,7 +124,6 @@ function Hero({ onOpen }) {
       <div className="hero-meta">
         <span>PERSONAL PORTFOLIO</span>
         <span>SCROLL TO EXPLORE</span>
-        <span>SHANGHAI / CHINA</span>
       </div>
       <button className="hero-frame image-button" type="button" onClick={() => onOpen(1)}>
         <img src={imageFor(1)} alt="Portfolio cover — page 1" fetchPriority="high" />
