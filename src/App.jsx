@@ -8,6 +8,9 @@ gsap.registerPlugin(ScrollTrigger)
 
 const pad = (number) => String(number).padStart(2, '0')
 const imageFor = (number) => `/pages/page-${pad(number)}.jpg`
+const mobileImageFor = (number) => `/pages/1280/page-${pad(number)}.jpg`
+const imageSrcSet = (number) => `${mobileImageFor(number)} 1280w, ${imageFor(number)} 1920w`
+const imageSizes = '(max-width: 900px) calc(100vw - 28px), min(100vw - 64px, 1700px)'
 
 // Most portfolio spreads share this canvas. Supplying the real dimensions for
 // the tall editorial pages reserves their space before image decode, preventing
@@ -145,6 +148,8 @@ function Hero() {
       <div className="hero-frame">
         <img
           src={imageFor(1)}
+          srcSet={imageSrcSet(1)}
+          sizes={imageSizes}
           alt="Portfolio cover — page 1"
           width="1920"
           height="1080"
@@ -208,6 +213,8 @@ function PageCard({ page, wide }) {
       <div className="page-card-media">
         <img
           src={imageFor(page)}
+          srcSet={imageSrcSet(page)}
+          sizes={imageSizes}
           alt={`Portfolio page ${page}`}
           width={width}
           height={height}
@@ -281,6 +288,8 @@ function Closing() {
         <div className="closing-frame">
           <img
             src={imageFor(75)}
+            srcSet={imageSrcSet(75)}
+            sizes={imageSizes}
             alt="Thanks for watching — portfolio page 75"
             width="1920"
             height="1080"
@@ -305,6 +314,7 @@ export default function App() {
 
   useLayoutEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const compactViewport = window.matchMedia('(max-width: 900px), (pointer: coarse)').matches
     if (reduceMotion) {
       document.body.classList.add('is-ready')
       return undefined
@@ -348,18 +358,22 @@ export default function App() {
           .from(details, { y: 30, opacity: 0, duration: 0.8, stagger: 0.08, ease: 'power3.out' })
       })
 
-      gsap.utils.toArray('.page-card').forEach((card) => {
-        gsap.fromTo(card, { yPercent: 1.8 }, {
-          yPercent: -1.8,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top bottom',
-            end: 'bottom top',
-            scrub: 0.8,
-          },
+      // The subtle parallax is retained on desktop but is costly when a phone
+      // is decoding long image spreads while scrolling.
+      if (!compactViewport) {
+        gsap.utils.toArray('.page-card').forEach((card) => {
+          gsap.fromTo(card, { yPercent: 1.8 }, {
+            yPercent: -1.8,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: card,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 0.8,
+            },
+          })
         })
-      })
+      }
 
     }, appRef)
 

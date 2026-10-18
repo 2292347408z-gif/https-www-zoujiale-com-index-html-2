@@ -117,6 +117,7 @@ const ScrollReveal = ({
     if (scrollContainerRef && !scrollContainerRef.current) return;
 
     const scroller = scrollContainerRef?.current || window;
+    const lowPowerViewport = window.matchMedia?.('(max-width: 900px), (pointer: coarse)')?.matches;
     const wrappers = Array.from(el.querySelectorAll('.scroll-reveal-word'));
     const pieces = wrappers.length ? Array.from(el.querySelectorAll('.scroll-reveal-piece')) : [textEl];
     const viewportHeight = () => (scroller instanceof HTMLElement ? scroller.clientHeight : window.innerHeight);
@@ -127,7 +128,9 @@ const ScrollReveal = ({
       effect,
       masked: effect === 'rise' && wrappers.length > 0,
       baseOpacity,
-      blur: enableBlur ? blurStrength : 0,
+      // Keep the same rise/reveal choreography on touch devices without the
+      // expensive per-frame blur compositing that causes scroll hitching.
+      blur: enableBlur && !lowPowerViewport ? blurStrength : 0,
       offset: baseOffset,
       highlightColor
     };

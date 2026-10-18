@@ -134,6 +134,7 @@ const TechText = ({
     if (!container || !canvas || !ctx || !scratchCtx) return undefined;
 
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    const compactMotionQuery = window.matchMedia?.('(max-width: 900px), (pointer: coarse)');
     let width = 1;
     let height = 1;
     let dpr = 1;
@@ -723,7 +724,9 @@ const TechText = ({
       const progress = introOn ? clamp01((introClock - INTRO_DELAY) / Math.max(0.3, s.introDuration)) : 1;
       introducing = introOn && progress < 1;
 
-      const sweeping = !introducing && s.sweep && !reducedMotion && !pointer.inside && dragging < 0;
+      // The automatic lens sweep is a desktop detail. Disable only that
+      // continuous canvas loop for compact/touch viewports.
+      const sweeping = !introducing && s.sweep && !reducedMotion && !compactMotionQuery?.matches && !pointer.inside && dragging < 0;
       if (sweeping) clock += dt * s.speed;
       pulse += dt;
       let targetX = pointer.x;
@@ -992,6 +995,7 @@ const TechText = ({
     }
     const schemeQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
     schemeQuery?.addEventListener?.('change', wake);
+    compactMotionQuery?.addEventListener?.('change', wake);
     if (document.fonts) document.fonts.ready.then(fontsLoaded, fontsLoaded);
 
     resize();
@@ -1005,6 +1009,7 @@ const TechText = ({
       document.removeEventListener('visibilitychange', onVisibilityChange);
       themeObserver.disconnect();
       schemeQuery?.removeEventListener?.('change', wake);
+      compactMotionQuery?.removeEventListener?.('change', wake);
       container.style.cursor = '';
       container.removeEventListener('pointermove', onMove);
       container.removeEventListener('pointerenter', onMove);
