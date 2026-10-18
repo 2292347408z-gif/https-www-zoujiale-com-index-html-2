@@ -201,6 +201,9 @@ const ScrollReveal = ({
         ScrollTrigger.create({
           trigger: el,
           scroller,
+          // Enter animations never reset in this mode, so release each trigger
+          // after its first play instead of keeping one observer per archived page.
+          once: true,
           start: startAt,
           onEnter: play,
           onLeave: play,

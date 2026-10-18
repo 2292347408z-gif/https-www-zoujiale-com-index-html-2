@@ -9,6 +9,25 @@ gsap.registerPlugin(ScrollTrigger)
 const pad = (number) => String(number).padStart(2, '0')
 const imageFor = (number) => `/pages/page-${pad(number)}.jpg`
 
+// Most portfolio spreads share this canvas. Supplying the real dimensions for
+// the tall editorial pages reserves their space before image decode, preventing
+// layout shifts that would otherwise force ScrollTrigger to recalculate mid-scroll.
+const pageImageSizes = {
+  31: [1920, 1899],
+  33: [1920, 2470],
+  35: [1920, 2501],
+  38: [1920, 1409],
+  40: [1920, 1414],
+  42: [1920, 1422],
+  44: [1920, 1349],
+  45: [1920, 2366],
+  47: [1920, 3048],
+  62: [1920, 4116],
+  67: [1920, 1899],
+}
+
+const imageSizeFor = (number) => pageImageSizes[number] ?? [1920, 1080]
+
 const pageDimensions = {
   31: '1920 × 1899',
   33: '1920 × 2470',
@@ -49,8 +68,6 @@ const sections = [
     pages: [71, 72, 73, 74],
   },
 ]
-
-const visiblePages = [1, ...sections.flatMap((section) => section.pages), 75]
 
 function groupPages(pages) {
   return pages.map((page) => [page])
@@ -118,16 +135,23 @@ function SiteHeader({ activeSection }) {
   )
 }
 
-function Hero({ onOpen }) {
+function Hero() {
   return (
     <section className="hero" id="top">
       <div className="hero-meta">
         <span>PERSONAL PORTFOLIO</span>
         <span>SCROLL TO EXPLORE</span>
       </div>
-      <button className="hero-frame image-button" type="button" onClick={() => onOpen(1)}>
-        <img src={imageFor(1)} alt="Portfolio cover — page 1" fetchPriority="high" />
-      </button>
+      <div className="hero-frame">
+        <img
+          src={imageFor(1)}
+          alt="Portfolio cover — page 1"
+          width="1920"
+          height="1080"
+          decoding="async"
+          fetchPriority="high"
+        />
+      </div>
       <div className="hero-foot">
         <p>A complete visual archive presented as a cinematic web experience.</p>
         <span className="scroll-cue"><i /> KEEP SCROLLING</span>
@@ -176,23 +200,22 @@ function SectionIntro({ section }) {
   )
 }
 
-function PageCard({ page, wide, onOpen }) {
+function PageCard({ page, wide }) {
+  const [width, height] = imageSizeFor(page)
+
   return (
     <article className={`page-card ${wide ? 'page-card-wide' : ''}`}>
-      <button
-        type="button"
-        className="image-button page-card-button"
-        onClick={() => onOpen(page)}
-        aria-label={`Open portfolio page ${page} full screen`}
-      >
+      <div className="page-card-media">
         <img
           src={imageFor(page)}
           alt={`Portfolio page ${page}`}
-          loading={page < 4 ? 'eager' : 'lazy'}
+          width={width}
+          height={height}
+          loading="lazy"
           decoding="async"
+          fetchPriority="low"
         />
-        <span className="view-label">VIEW FULL ↗</span>
-      </button>
+      </div>
       <footer>
         <span>PAGE / {pad(page)}</span>
         <span>{pageDimensions[page] ?? '1920 × 1080'}</span>
@@ -201,7 +224,7 @@ function PageCard({ page, wide, onOpen }) {
   )
 }
 
-function PortfolioSection({ section, onOpen }) {
+function PortfolioSection({ section }) {
   const rows = useMemo(
     () => groupPages(section.pages),
     [section.pages],
@@ -228,7 +251,7 @@ function PortfolioSection({ section, onOpen }) {
                 enableBlur
                 blurStrength={10}
               >
-                <PageCard page={page} wide={row.length === 1} onOpen={onOpen} />
+                <PageCard page={page} wide={row.length === 1} />
               </ScrollReveal>
             ))}
           </div>
@@ -238,47 +261,7 @@ function PortfolioSection({ section, onOpen }) {
   )
 }
 
-function Lightbox({ page, onClose, onChange }) {
-  const pageIndex = visiblePages.indexOf(page)
-  const previousPage = pageIndex > 0 ? visiblePages[pageIndex - 1] : null
-  const nextPage = pageIndex < visiblePages.length - 1 ? visiblePages[pageIndex + 1] : null
-
-  useEffect(() => {
-    if (!page) return undefined
-
-    const onKeyDown = (event) => {
-      if (event.key === 'Escape') onClose()
-      if (event.key === 'ArrowRight' && nextPage) onChange(nextPage)
-      if (event.key === 'ArrowLeft' && previousPage) onChange(previousPage)
-    }
-
-    document.addEventListener('keydown', onKeyDown)
-    document.body.classList.add('lightbox-open')
-    return () => {
-      document.removeEventListener('keydown', onKeyDown)
-      document.body.classList.remove('lightbox-open')
-    }
-  }, [page, onClose, onChange, nextPage, previousPage])
-
-  if (!page) return null
-
-  return (
-    <div className="lightbox" role="dialog" aria-modal="true" aria-label={`Portfolio page ${page}`}>
-      <div className="lightbox-bar">
-        <span>ZOU JIALE / PAGE {pad(page)}</span>
-        <button type="button" onClick={onClose}>CLOSE ×</button>
-      </div>
-      <div className="lightbox-stage">
-        <button type="button" onClick={() => previousPage && onChange(previousPage)} disabled={!previousPage} aria-label="Previous page">←</button>
-        <img src={imageFor(page)} alt={`Portfolio page ${page}, full screen`} />
-        <button type="button" onClick={() => nextPage && onChange(nextPage)} disabled={!nextPage} aria-label="Next page">→</button>
-      </div>
-      <span className="lightbox-hint">USE ← → KEYS TO NAVIGATE</span>
-    </div>
-  )
-}
-
-function Closing({ onOpen }) {
+function Closing() {
   return (
     <section className="closing" id="end">
       <p className="closing-kicker">END OF ARCHIVE / SELECTED WORKS</p>
@@ -295,9 +278,17 @@ function Closing({ onOpen }) {
         enableBlur
         blurStrength={10}
       >
-        <button className="closing-frame image-button" type="button" onClick={() => onOpen(75)}>
-          <img src={imageFor(75)} alt="Thanks for watching — portfolio page 75" loading="lazy" />
-        </button>
+        <div className="closing-frame">
+          <img
+            src={imageFor(75)}
+            alt="Thanks for watching — portfolio page 75"
+            width="1920"
+            height="1080"
+            loading="lazy"
+            decoding="async"
+            fetchPriority="low"
+          />
+        </div>
       </ScrollReveal>
       <footer>
         <span>DESIGNED BY ZOU JIALE</span>
@@ -311,7 +302,6 @@ function Closing({ onOpen }) {
 export default function App() {
   const appRef = useRef(null)
   const [activeSection, setActiveSection] = useState(sections[0].id)
-  const [lightboxPage, setLightboxPage] = useState(null)
 
   useLayoutEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -394,14 +384,25 @@ export default function App() {
   }, [])
 
   useEffect(() => {
+    let frame = 0
+
     const updateProgress = () => {
+      frame = 0
       const max = document.documentElement.scrollHeight - window.innerHeight
       const progress = max > 0 ? window.scrollY / max : 0
       document.documentElement.style.setProperty('--scroll-progress', progress)
     }
-    window.addEventListener('scroll', updateProgress, { passive: true })
+
+    const requestProgressUpdate = () => {
+      if (!frame) frame = window.requestAnimationFrame(updateProgress)
+    }
+
+    window.addEventListener('scroll', requestProgressUpdate, { passive: true })
     updateProgress()
-    return () => window.removeEventListener('scroll', updateProgress)
+    return () => {
+      window.removeEventListener('scroll', requestProgressUpdate)
+      window.cancelAnimationFrame(frame)
+    }
   }, [])
 
   return (
@@ -411,14 +412,13 @@ export default function App() {
       <SiteHeader activeSection={activeSection} />
       <main>
         <div className="portfolio-shell">
-          <Hero onOpen={setLightboxPage} />
+          <Hero />
           {sections.map((section) => (
-            <PortfolioSection key={section.id} section={section} onOpen={setLightboxPage} />
+            <PortfolioSection key={section.id} section={section} />
           ))}
-          <Closing onOpen={setLightboxPage} />
+          <Closing />
         </div>
       </main>
-      <Lightbox page={lightboxPage} onClose={() => setLightboxPage(null)} onChange={setLightboxPage} />
     </div>
   )
 }

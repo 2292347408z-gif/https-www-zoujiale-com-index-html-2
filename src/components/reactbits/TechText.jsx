@@ -96,7 +96,34 @@ const TechText = ({
       guides
     };
     wakeRef.current();
-  });
+  }, [
+    text,
+    fontFamily,
+    fontWeight,
+    fontSize,
+    letterSpacing,
+    color,
+    accentColor,
+    align,
+    reach,
+    softness,
+    dashLength,
+    dashGap,
+    strokeWidth,
+    lineStyle,
+    reveal,
+    specks,
+    selection,
+    labels,
+    draggable,
+    bounce,
+    sweep,
+    speed,
+    clickKick,
+    intro,
+    introDuration,
+    guides
+  ]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -113,6 +140,7 @@ const TechText = ({
     let raf = 0;
     let last = performance.now();
     let visible = false;
+    let pageVisible = !document.hidden;
     let alive = true;
     let layoutKey = '';
     let requestedFont = '';
@@ -864,11 +892,11 @@ const TechText = ({
         (guideAlpha > 0.005 && guideAlpha < 0.995) ||
         Math.abs(presence - (s.reveal === 'area' && active && dragging < 0 ? 1 : 0)) > 0.002 ||
         (frame.alpha > 0.01 && frame.alpha < 0.99);
-      if ((active || settling) && visible && alive) raf = requestAnimationFrame(tick);
+      if ((active || settling) && visible && pageVisible && alive) raf = requestAnimationFrame(tick);
     };
 
     const wake = () => {
-      if (raf || !visible || !alive) return;
+      if (raf || !visible || !pageVisible || !alive) return;
       last = performance.now();
       raf = requestAnimationFrame(tick);
     };
@@ -953,6 +981,11 @@ const TechText = ({
       wake();
     });
     intersectionObserver.observe(container);
+    const onVisibilityChange = () => {
+      pageVisible = !document.hidden;
+      if (pageVisible) wake();
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
     const themeObserver = new MutationObserver(wake);
     for (const node of [document.documentElement, document.body]) {
       if (node) themeObserver.observe(node, { attributes: true, attributeFilter: ['class', 'style', 'data-theme'] });
@@ -969,6 +1002,7 @@ const TechText = ({
       wakeRef.current = () => {};
       resizeObserver.disconnect();
       intersectionObserver.disconnect();
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       themeObserver.disconnect();
       schemeQuery?.removeEventListener?.('change', wake);
       container.style.cursor = '';
